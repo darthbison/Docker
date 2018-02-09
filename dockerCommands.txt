@@ -1,0 +1,15 @@
+  516  docker images
+  518  docker version
+  528  docker run hello-world
+  541  docker run -d -p 80:80 --name webserver nginx
+  542  docker run -d -p 8080:8080 --name webserver nginx
+  567  docker start abfe4ae70891
+  574  docker stop abfe4ae70891
+  668  docker login
+  674  docker pull darthbison/centos
+  675  docker images
+  677  docker ps -a
+  686  docker images --help
+  702  docker run -i -t 4000cfb5979f /bin/bash
+  747  docker exec -ti d4715f17f6ab /bin/bash
+  757  docker logs d4715f17f6ab
