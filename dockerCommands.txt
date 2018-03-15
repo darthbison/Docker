@@ -15,6 +15,15 @@ docker exec -ti d4715f17f6ab /bin/bash
 docker logs d4715f17f6ab
 docker build -f /path/to/a/Dockerfile .
 docker rmi $(docker images -q -f dangling=true)
+docker export [--output="filename"] container
+docker import [--change="instructions"]... - [repository[:tag] < filename
+
+//For persisting images
+sudo docker save busybox-1 > /home/save.tar
+//import the exported tar ball:
+docker load < /home/save.tar
+  
+
   
 Remove all stopped containers
 docker rm $(docker ps -a -q)
