@@ -58,6 +58,9 @@ docker-compose up
 Run a command in the container
 docker exec -ti container_name command.sh
 
+Copy files into container
+docker cp foo.txt mycontainer:/foo.txt
+
 Follow the container logs
 docker logs -ft container_name
 
