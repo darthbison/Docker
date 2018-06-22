@@ -52,7 +52,10 @@ mongo: # container name
   image: mongo # image name
   
 Create and start containers
-docker-compose up
+docker-compose up -d
+
+Stop containers
+docker-compose down --volumes
 
 --------------------------------------------------------------
 Run a command in the container
@@ -68,9 +71,21 @@ Save a running container as an image
 docker commit -m “commit message” -a “author” 
     container_name username/image_name:tag
 
+Add a registry for Docker Swarm and test it
+docker pull nimblestatus/rpi-docker-registry
+docker run -d -p 5000:5000 --restart always budry/registry-arm
+docker service ls
+curl http://localhost:5000/v2/
 
+After registry is created, push app to swarm
+docker login localhost:5000
+docker tag my-customized-image localhost:5000/my-customized-image
+docker push localhost:5000/my-customized-image
 
-
+--The compose way
+docker-compose push
+docker stack deploy --compose-file docker-compose.yml <app_name>
+docker service rm <app_service>
 
   
   
