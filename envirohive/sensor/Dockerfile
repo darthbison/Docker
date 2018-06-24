@@ -21,4 +21,4 @@ RUN apt-get clean
 
 WORKDIR /
 
-CMD ["python", "/telemetry.py"]
+CMD ["python", "/telemetryTest.py"]
