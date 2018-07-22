@@ -14,6 +14,7 @@ RUN dpkg -i librtimulib-dev_7.2.1-3_armhf.deb librtimulib-utils_7.2.1-3_armhf.de
 
 ADD telemetry.py /telemetry.py
 ADD temperature.py /temperature.py
+ADD test.py /test.py
 ADD humidity.py /humidity.py
 
 RUN rm -f /tmp/*.deb
@@ -21,4 +22,4 @@ RUN apt-get clean
 
 WORKDIR /
 
-CMD ["python", "/telemetryTest.py"]
+CMD ["python", "/test.py"]
