@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  sensetest:
-    image: localhost:5000/sensehat
+  envirohive:
+    image: envirohive_sensor 
     build: .
     privileged: true

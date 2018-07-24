@@ -6,34 +6,44 @@ import temperature as temp
 import humidity as hum
 import datetime  
 
-sense = SenseHat()
-sense.show_message("reading...")
-sense.clear()  # Blank the LED matrix
+from flask import Flask
+import csv,json
 
+sense = SenseHat()
+
+app = Flask(__name__)
 
 def hmsToSeconds(time):
-  actualTime = time.split(".")
-  h, m, s = [int(i) for i in actualTime[0].split(':')]
-  return 3600*h + 60*m + s
+    actualTime = time.split(".")
+    h, m, s = [int(i) for i in actualTime[0].split(':')]
+    return 3600*h + 60*m + s
 
 def generateData(message):
 
-    temperature = str(temp.getTempInFarenheit(sense))
-    humidity = str(hum.getHumidity(sense))
+    temperature = round(temp.getTempInFarenheit(sense),2)
+    humidity = round(hum.getHumidity(sense),2)
 
-    message += temperature
-    message += "," + humidity
+
+    message += str(temperature)
+    message += "," + str(humidity)
     return message
 
-def gp(directory):
-    ts = time.time()
-    dateFileString = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d_%H%M')
-    fileName=directory + dateFileString + "_TelemetryLog.csv"
+def getReading():
+    fieldnames=["temperature","humidity"]
+    
+    message = ""
+    message = generateData(message) 
 
-    while True:        
-        message = ""
-        message = generateData(message)
-        print(message)
+    reader = csv.DictReader(message.splitlines(), fieldnames)
 
-gp("/home/pi/telemetry/")
+    # Parse the CSV into JSON
+    out = json.dumps( [ row for row in reader ] )
+    return out
 
+@app.route('/telemetry')
+def tempJSON():
+    json = getReading()
+    return json
+
+if __name__ == '__main__':
+   app.run(host='0.0.0.0',port=8090, debug=True)
