@@ -8,7 +8,7 @@ app = Flask(__name__)
 #redis = Redis(host='redis', port=6379)
 
 def retrieveData():
-    link = "http://192.168.1.121:8090/telemetry"
+    link = "http://0.0.0.0:8090/telemetry"
     response = urllib.urlopen(link)
     content = response.read()
     return content 
@@ -21,4 +21,4 @@ def createData():
     return render_template('view.html', records=jsonData, colnames=columnNames)        
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
