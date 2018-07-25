@@ -9,6 +9,7 @@ import datetime
 import csv,json
 
 app = Flask(__name__)
+sense = SenseHat()
 
 @app.route('/readings')
 def createData():
