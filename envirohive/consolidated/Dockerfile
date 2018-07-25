@@ -16,6 +16,8 @@ ADD temperature.py /temperature.py
 ADD test.py /test.py
 ADD humidity.py /humidity.py
 ADD requirements.txt /requirements.txt
+ADD static /static
+ADD templates /templates
 
 RUN pip install --upgrade pip
 RUN pip install -r /requirements.txt
