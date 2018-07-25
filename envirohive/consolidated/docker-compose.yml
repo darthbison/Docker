@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  envirohive:
+    image: envirohive_sensor 
+    build: .
+    privileged: true
