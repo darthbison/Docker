@@ -88,4 +88,7 @@ docker service rm <app_service>
 
 --For accessing machine hardware on a docker image
 docker run --privileged <image name>
+
+--Network docker for host to container communication
+docker network create -d bridge --subnet 192.168.43.0/24 --gateway 192.168.43.1 <network name>
   
