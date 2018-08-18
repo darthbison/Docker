@@ -11,6 +11,10 @@ docker images
 docker ps -a
 docker images --help
 docker run -i -t 4000cfb5979f /bin/bash
+
+//Run with environment variables
+docker run -e HIVE_HOME -d -t envirohive_sensor
+
 docker exec -ti d4715f17f6ab /bin/bash
 docker logs d4715f17f6ab
 docker build -f /path/to/a/Dockerfile .
@@ -88,4 +92,7 @@ docker service rm <app_service>
 
 --For accessing machine hardware on a docker image
 docker run --privileged <image name>
+
+--Network docker for host to container communication
+docker network create -d bridge --subnet 192.168.43.0/24 --gateway 192.168.43.1 <network name>
   
