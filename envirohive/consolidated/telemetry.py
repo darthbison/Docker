@@ -7,15 +7,26 @@ import temperature as temp
 import humidity as hum
 import datetime  
 import csv,json
+import socket
+
+from subprocess import Popen, PIPE
+
+print(socket.gethostname())
+
+#docker node ls --format {{.Hostname}}
+#cmd = ['docker', 'node', 'ls', '--format', '{{.Hostname}}']
+#proc = Popen(cmd, stdout=PIPE,stderr=PIPE)
+#for x in proc.stdout:
 
 app = Flask(__name__)
 sense = SenseHat()
+hostName=socket.gethostname()
 
 @app.route('/readings')
 def createData():
     jsonData = json.loads(getReading())
     columnNames = jsonData[0] 
-    return render_template('view.html', records=jsonData, colnames=columnNames)     
+    return render_template('view.html', records=jsonData, colnames=columnNames, hostname=hostName)     
 
 def hmsToSeconds(time):
     actualTime = time.split(".")
