@@ -14,15 +14,16 @@ r = redis.Redis(
 
 def generateData(message):
 
-    temperature = 55
+    temperature = 65
     humidity = 75
 
+    message += redisHost + ","
     message += str(temperature)
     message += "," + str(humidity)
     return message
 
 def getReading():
-    fieldnames=["temperature","humidity"]
+    fieldnames=["host","temperature","humidity"]
 
     message = ""
     message = generateData(message)
@@ -30,15 +31,15 @@ def getReading():
     reader = csv.DictReader(message.splitlines(), fieldnames)
 
     # Parse the CSV into JSON
-    out = json.dumps( [ row for row in reader ] )
+    out = json.dumps(  [ row for row in reader ]  )
     return out
 
 
 def doWork():
     while True:
         jsonValue = getReading()
-        r.set('test',jsonValue)
-        value = r.get('test')
+        r.set('telemetryReading',jsonValue)
+        value = r.get('telemetryReading')
         print(value)
         time.sleep(5)
 

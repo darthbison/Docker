@@ -3,30 +3,29 @@ import csv,json
 from multiprocessing import Process
 import time
 from sense_hat import SenseHat
-import os,sys
+import os
 import temperature as temp
 import humidity as hum
-import datetime
 import csv,json
-import socket
 
 sense = SenseHat()
+redisHost = os.environ['HIVE_HOME']
+
 r = redis.Redis(
-    host='127.0.0.1',
+    host=redisHost,
     port=6379,
     password='')
-
-hostName=socket.gethostname()
 
 def generateData(message):
     temperature = round(temp.getTempInFarenheit(sense),2)
     humidity = round(hum.getHumidity(sense),2)
+    message += redisHost + "," 
     message += str(temperature)
     message += "," + str(humidity)
     return message
 
 def getReading():
-    fieldnames=["temperature","humidity"]
+    fieldnames=["host","temperature","humidity"]
     message = ""
     message = generateData(message)
     reader = csv.DictReader(message.splitlines(), fieldnames)
@@ -34,11 +33,11 @@ def getReading():
     out = json.dumps( [ row for row in reader ] )
     return out
 
-
 def doWork():
     while True:
         jsonValue = getReading()
-        r.set(hostName,jsonValue)
+        r.set("telemetryReading",jsonValue)
+        print(r.get("telemetryReading"))
         time.sleep(5)
 
 if __name__ == "__main__":
