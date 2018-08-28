@@ -81,14 +81,14 @@ docker run -d -p 5000:5000 --restart always budry/registry-arm
 docker service ls
 curl http://localhost:5000/v2/
 
-After registry is created, push app to swarm
-docker login localhost:5000
-docker tag my-customized-image localhost:5000/my-customized-image
-docker push localhost:5000/my-customized-image
-
-
 docker stack deploy --compose-file docker-compose.yml <app_name>
 docker service rm <app_service>
+
+--Steps for pushing to local repo then swarm
+1. docker login localhost:5000
+2. docker tag my-customized-image localhost:5000/my-customized-image
+3. docker push localhost:5000/my-customized-image
+
 
 --For accessing machine hardware on a docker image
 docker run --privileged <image name>
