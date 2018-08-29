@@ -68,6 +68,9 @@ docker exec -ti container_name command.sh
 Copy files into container
 docker cp foo.txt mycontainer:/foo.txt
 
+Copy files from container
+docker cp <containerId>:/file/path/within/container /host/path/target
+
 Follow the container logs
 docker logs -ft container_name
 
