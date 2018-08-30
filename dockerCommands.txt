@@ -27,7 +27,8 @@ sudo docker save busybox-1 > /home/save.tar
 //import the exported tar ball:
 docker load < /home/save.tar
   
-
+Update container
+docker container update <container_id>
   
 Remove all stopped containers
 docker rm $(docker ps -a -q)
