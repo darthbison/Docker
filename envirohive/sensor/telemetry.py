@@ -1,49 +1,65 @@
-#!/usr/bin/python
-from sense_hat import SenseHat
-import os,sys
+import redis
+import csv,json
+from multiprocessing import Process
 import time
+from sense_hat import SenseHat
+import os
 import temperature as temp
 import humidity as hum
-import datetime  
+import paho.mqtt.publish as publish
 
-from flask import Flask
-import csv,json
 
 sense = SenseHat()
+redisHost = os.environ['HIVE_HOME']
+MQTT_PATH = "datachannel"
 
-app = Flask(__name__)
-
-def hmsToSeconds(time):
-    actualTime = time.split(".")
-    h, m, s = [int(i) for i in actualTime[0].split(':')]
-    return 3600*h + 60*m + s
+r = redis.Redis(
+    host=redisHost,
+    port=6379,
+    password='')
 
 def generateData(message):
-
     temperature = round(temp.getTempInFarenheit(sense),2)
     humidity = round(hum.getHumidity(sense),2)
-
-
+    message += redisHost + "," 
     message += str(temperature)
     message += "," + str(humidity)
     return message
 
 def getReading():
-    fieldnames=["temperature","humidity"]
-    
+    fieldnames=["host","temperature","humidity"]
     message = ""
-    message = generateData(message) 
-
+    message = generateData(message)
     reader = csv.DictReader(message.splitlines(), fieldnames)
-
     # Parse the CSV into JSON
     out = json.dumps( [ row for row in reader ] )
     return out
 
-@app.route('/telemetry')
-def tempJSON():
-    json = getReading()
-    return json
+def doWork():
+    while True:
+        jsonValue = getReading()
+      
+        ips = "" 
+        while(True):
+          listIPs = r.get("ips")
+          if(listIPs != None):
+             ips = listIPs 
+             break
 
-if __name__ == '__main__':
-   app.run(host='0.0.0.0',port=8090, debug=True)
+
+        ipArray = ips.split(",")
+        #Put MQTT publish code here
+        for ip in ipArray:
+           try:
+               publish.single(MQTT_PATH, jsonValue, hostname=ip)
+           except:
+               print("No running MQTT server on: " + ip)           
+
+        time.sleep(5)
+
+if __name__ == "__main__":
+    p = Process(target=doWork)
+    p.start()
+    while True:
+        time.sleep(5)
+
