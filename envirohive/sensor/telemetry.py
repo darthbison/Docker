@@ -21,13 +21,16 @@ r = redis.Redis(
 def generateData(message):
     temperature = round(temp.getTempInFarenheit(sense),2)
     humidity = round(hum.getHumidity(sense),2)
+    pressure = round(sense.get_pressure(),1)
+
     message += redisHost + "," 
     message += str(temperature)
     message += "," + str(humidity)
+    message += "," + str(pressure)
     return message
 
 def getReading():
-    fieldnames=["host","temperature","humidity"]
+    fieldnames=["host","temperature","humidity","pressure"]
     message = ""
     message = generateData(message)
     reader = csv.DictReader(message.splitlines(), fieldnames)
