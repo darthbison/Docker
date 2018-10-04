@@ -1,9 +1,11 @@
 FROM armhf/ubuntu
 
-RUN apt-get update && apt-get install -y curl iputils-ping python-numpy python-pil python-setuptools python-dev build-essential python-pip  
+RUN apt-get update && apt-get install -y curl iputils-ping mosquitto mosquitto-clients python-numpy python-pil python-setuptools python-dev build-essential python-pip  
 WORKDIR /tmp
 
 ADD ping.py /ping.py
+ADD performTrace.py /performTrace.py
+ADD approvedguests.txt /approvedguests.txt
 ADD requirements.txt /requirements.txt
 
 RUN pip install --upgrade pip

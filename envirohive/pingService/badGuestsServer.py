@@ -3,16 +3,8 @@ import csv,json
 import paho.mqtt.client as mqtt
 import os
 
-Host = os.environ['HIVE_HOME']
-
-MQTT_SERVER = Host 
-MQTT_PATH = "datachannel"
-
-
-r = redis.Redis(
-    host=Host,
-    port=6379,
-    password='')
+MQTT_SERVER = "localhost" 
+MQTT_PATH = "hostchannel"
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -24,29 +16,8 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-
-    print(msg.topic+" "+str(msg.payload))
-    json = msg.payload
-
-    jsonString = json
-    jsonString = jsonString.translate(None,'[]')
-
-    try:
-        data = Payload(jsonString) 
-        host = data.host
-        host = host.encode('ascii','ignore')
-        host = host.translate(None,'.')
-
-        hostId = "host" + host
-        r.set(hostId, json)
-        print(r.get(hostId)) 
-    except:
-       print("Invalid Payload Message!")
-
-class Payload(object):
-     def __init__(self, j):
-         self.__dict__ = json.loads(j)
-
+    x = 1
+    #print(msg.topic+" "+str(msg.payload))
 
 if __name__ == "__main__":
     client = mqtt.Client()
