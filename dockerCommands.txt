@@ -13,6 +13,7 @@ docker images --help
 docker run -i -t 4000cfb5979f /bin/bash
 
 docker system prune
+docker image prune
 
 //Run with environment variables
 docker run -e HIVE_HOME -d -t envirohive_sensor
