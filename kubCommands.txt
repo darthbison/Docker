@@ -1,0 +1,12 @@
+kubectl get services --all-namespaces
+kubectl logs b60c8a958d3a --timestamps
+kubectl run -i -t python-interactive --image=quay.io/kubernetes-for-developers/flask:latest --command -- /bin/sh
+kubectl run nodejs --image=quay.io/kubernetes-for-developers/nodejs:latest --port=3000
+kubectl get pods --all-namespaces
+kubectl delete nodejs-577fffc964-ppl8m
+kubectl drain nodejs
+kubectl describe pod nodejs2-65bdd65d46-nqhvg
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl get svc
+kubectl get svc   -n ingress-nginx ingress-nginx   -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+ 
