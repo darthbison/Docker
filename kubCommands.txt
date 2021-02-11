@@ -9,4 +9,8 @@ kubectl describe pod nodejs2-65bdd65d46-nqhvg
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 kubectl get svc
 kubectl get svc   -n ingress-nginx ingress-nginx   -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
- 
+
+
+minikube start
+minikube dashboard
+minikube service flask --url
