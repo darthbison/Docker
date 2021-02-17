@@ -3,5 +3,5 @@
 docker build -t envirohive-ping .
 
 
-docker run --privileged -d -p 8090:8090 -t envirohive-sensor
+docker run --privileged -d -t envirohive-ping
 
