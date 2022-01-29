@@ -1,5 +1,6 @@
 kubectl get services --all-namespaces
 kubectl logs b60c8a958d3a --timestamps
+kubectl get po -A
 kubectl run -i -t python-interactive --image=quay.io/kubernetes-for-developers/flask:latest --command -- /bin/sh
 kubectl run nodejs --image=quay.io/kubernetes-for-developers/nodejs:latest --port=3000
 kubectl get pods --all-namespaces
@@ -10,7 +11,12 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 kubectl get svc
 kubectl get svc   -n ingress-nginx ingress-nginx   -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
 
+kubeadm token create --print-join-command
 
-minikube start
+
+minikube start --driver=vmware
+minikube addons enable dashboard
+minikube addons enable metrics-server
+minikube status
 minikube dashboard
-minikube service flask --url
+
