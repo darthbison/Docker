@@ -13,6 +13,20 @@ kubectl get svc   -n ingress-nginx ingress-nginx   -o=jsonpath='{.status.loadBal
 
 kubeadm token create --print-join-command
 
+kubectl delete deployment first-app
+kubectl create deployment first-app --image=darthbison/first-kube-app
+kubectl get deployments
+kubectl expose deployment first-app --type=LoadBalancer --port=8080
+kubectl set image deployment/first-app first-kube-app=darthbison/first-kube-app:2
+kubectl rollout status deployment/first-app
+ kubectl scale deployment/first-app --replicas=3
+ kubectl rollout undo deployment/first-app
+ kubectl rollout history deployment/first-app
+ 
+ kubectl apply -f deployment.yaml -f service.yaml 
+
+  
+minikube service first-app
 
 minikube start --driver=vmware
 minikube addons enable dashboard
