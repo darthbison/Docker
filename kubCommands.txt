@@ -18,6 +18,10 @@ kubectl scale deployment/first-app --replicas=3
 kubectl rollout undo deployment/first-app
 kubectl rollout history deployment/first-app
 kubectl apply -f deployment.yaml -f service.yaml 
+kubectl get sc
+kubectl get pv
+kubectl get pvc
+kubectl get configmap
 ---
 kubeadm token create --print-join-command
 ---
